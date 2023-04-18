@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<title>Reddit Semantic Search</title>
+
+<h1>Reddit Semantic Search</h1>
+
+<p>Language models give computers the ability to search by meaning and go beyond searching by matching keywords. This capability is called semantic search. To demonstrate the power of this approach, this demo allows you to compare the search results of a semantic search against a more traditional search.</p>
+
+<p>The semantic search uses Cohere's Large Langauge Model to calculate the embeddings of postings and comments from within a subreddit and uses this for searching. Only subreddits that have embeddings can be searched.</p>
+
+<p>For information on this demo, read our blog here.</p>
+
+<div>
+  <span><b>Please choose from the available list of Subreddits:</b></span>
+  <select name="subreddit" id="subreddit-select"></select>
+</div>
+
+<div>
+  <p>Enter a search term to compare the results of a comprehensive seamntic search against the results from a traditional Reddit search.</p>
+  <form action="/search">
+    <input type="search" id="subreddit-search">
+    <div>
+      <input type="submit" value="Submit">
+      <input type="reset" value="Clear">
+    </div>
+  </form>
+</div>
+
+<div>
+
+</div>
