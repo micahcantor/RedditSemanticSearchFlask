@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Search Results</h1>
+
+<div>
+  <div>
+    <span>Reddit Search Results</span>
+    {% for result in reddit %}
+      <span>{% result['Posts'] %}</span>
+      <div>
+        {% for comment in result['Comments'] %}
+          <span>comment</span>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div>
+    <span>Semantic Search Results</span>
+    {% for result in semantic %}
+      <span>{% result['PostTitle'] %}</span>
+      <div>
+        {% for comment in result['PostComments'] %}
+          <span>comment</span>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

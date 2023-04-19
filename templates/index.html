@@ -1,7 +1,6 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<title>Reddit Semantic Search</title>
-
+{% block content %}
 <h1>Reddit Semantic Search</h1>
 
 <p>Language models give computers the ability to search by meaning and go beyond searching by matching keywords. This capability is called semantic search. To demonstrate the power of this approach, this demo allows you to compare the search results of a semantic search against a more traditional search.</p>
@@ -12,20 +11,19 @@
 
 <div>
   <span><b>Please choose from the available list of Subreddits:</b></span>
-  <select name="subreddit" id="subreddit-select"></select>
+  <select name="subreddit" id="subreddit-select" form="search-form">
+    <option value="">Select Subreddit</option>
+    <option value="economics">economics</option>
+    <option value="programming">programming</option>
+    <option value="technology">technology</option>
+  </select>
 </div>
 
 <div>
   <p>Enter a search term to compare the results of a comprehensive seamntic search against the results from a traditional Reddit search.</p>
-  <form action="/search">
-    <input type="search" id="subreddit-search">
-    <div>
-      <input type="submit" value="Submit">
-      <input type="reset" value="Clear">
-    </div>
+  <form action="/search" id="search-form">
+    <input name="query" type="search" id="subreddit-search">
+    <button type="submit">Submit</button>
   </form>
 </div>
-
-<div>
-
-</div>
+{% endblock %}
