@@ -20,8 +20,7 @@ def embed_query(query, cohere_client):
 
     return query_embed_np
 
-def semantic_search(query_embed, index, db_json):
-    
+def semantic_search(query_embed, index, db_json, limit):
     # Mapping between unique indices and original post information
     id_to_post = {i: post for i, post in enumerate(pd.DataFrame(db_json).to_dict('records'))}
     
@@ -35,13 +34,9 @@ def semantic_search(query_embed, index, db_json):
 
     resultsComments = [{"PostID":db_json['Posts'][i]['PostID'], 
                         "PostComments":db_json['Posts'][i]['PostComments']} for i in range(len(db_json['Posts'])) if db_json['Posts'][i]['PostID'] in list(results.PostID)]
-    
 
     resultsCommentsdf = pd.DataFrame(resultsComments)
-    semantic_comments = results.merge(resultsCommentsdf, left_on='PostID', right_on='PostID')
-
-    # they all start with the same comment becauase it is the moderation comment from the particular subreddit
-    semantic_search = [results['PostTitle'][i] for i in range(len(results['PostTitle']))]
+    semantic_results = results.merge(resultsCommentsdf, left_on='PostID', right_on='PostID')
     
-    return (semantic_search, semantic_comments)
+    return semantic_results[:limit]
 

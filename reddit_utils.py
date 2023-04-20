@@ -1,5 +1,5 @@
 import praw
-import pandas as pd
+from praw.models import MoreComments
 
 def authenticate_reddit(credentials):
   reddit = praw.Reddit(
@@ -11,23 +11,17 @@ def authenticate_reddit(credentials):
   )
   return reddit
 
-def reddit_search(reddit, subreddit_name, query):
-    reddit_search_titles = []
-    reddit_search_comments = []
-
+def reddit_search(reddit, subreddit_name, query, limit):
     subreddit = reddit.subreddit(subreddit_name)
 
-    search_obj = subreddit.search(query=query,
-                                sort='hot',
-                                syntax='lucene',
-                                time_filter='all')
-
-    for submission in search_obj:
-        reddit_search_titles.append(submission.title)
-        submission.comments.replace_more(limit=0)
-        comments = [comment.body for comment in submission.comments]
-        reddit_search_comments.append(comments)
-
-    reddit_search = pd.DataFrame({"Posts":reddit_search_titles, "Comments":reddit_search_comments})
+    search_obj = subreddit.search(query=query, sort='hot', time_filter='all')
     
-    return reddit_search
+    search_result = []
+    for i, submission in enumerate(search_obj):
+        if i < limit:
+            title = submission.title
+            comments = [comment.body for comment in submission.comments[:5]]
+            search_result.append({'title': title, 'comments': comments})
+        else: break
+    
+    return search_result
