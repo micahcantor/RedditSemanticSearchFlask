@@ -30,7 +30,6 @@ co = cohere.Client(credentials['cohere_api_key'])
 
 @app.route('/')
 def index():
-  print(faiss_index)
   return render_template('index.html')
 
 @app.route('/search',)
