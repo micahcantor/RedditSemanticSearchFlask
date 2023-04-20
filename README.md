@@ -6,7 +6,7 @@ This is the code for the demo for a technical article showing off the use of Coh
 
 ## Credentials
 
-To run the app, credentials to access the Reddit and Cohere APIs. Create a `credentials.json` file at the root level of this repository with the following structure:
+To run the app, credentials are needed to access the Reddit and Cohere APIs. Create a `credentials.json` file at the root level of this repository with the following structure:
 
 ```json
 {
