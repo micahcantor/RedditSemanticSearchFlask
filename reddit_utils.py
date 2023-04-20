@@ -1,5 +1,4 @@
 import praw
-from praw.models import MoreComments
 
 def authenticate_reddit(credentials):
   reddit = praw.Reddit(
@@ -20,7 +19,8 @@ def reddit_search(reddit, subreddit_name, query, limit):
     for i, submission in enumerate(search_obj):
         if i < limit:
             title = submission.title
-            comments = [comment.body for comment in submission.comments[:5]]
+            comment_limit = 5 # arbitrary, but allowing more comments is slower and need to deal with MoreComments objects
+            comments = [comment.body for comment in submission.comments[:comment_limit]]
             search_result.append({'title': title, 'comments': comments})
         else: break
     
