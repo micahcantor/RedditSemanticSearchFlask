@@ -1,15 +1,7 @@
-import pandas as pd
 import json
 import datetime as dt
 import numpy as np
 import faiss
-
-def calculate_stats(df):
-    minComs = df.NumComments.min()
-    maxComs = df.NumComments.max()
-    meanComs = df.NumComments.mean()
-    totalComments = df.NumComments.sum()
-    return minComs, maxComs, meanComs, totalComments
 
 def embed_query(query, cohere_client):
     query_embed = cohere_client.embed(texts=[query], model="large").embeddings
@@ -21,22 +13,16 @@ def embed_query(query, cohere_client):
     return query_embed_np
 
 def semantic_search(query_embed, index, db_json, limit):
-    # Mapping between unique indices and original post information
-    id_to_post = {i: post for i, post in enumerate(pd.DataFrame(db_json).to_dict('records'))}
-    
     # Retrieve top 5 most similar indexed embeddings (D is distance and I is index)
-    D, I = index.search(query_embed, 5)
+    D, I = index.search(query_embed, limit)
 
     # Format the results
-    results = pd.DataFrame(data={'PostID': [id_to_post[i]['Posts']['PostID'] for i in I[0]], 
-                                'PostTitle': [id_to_post[i]['Posts']['PostTitle'] for i in I[0]], 
-                                'distance': D[0]})
-
-    resultsComments = [{"PostID":db_json['Posts'][i]['PostID'], 
-                        "PostComments":db_json['Posts'][i]['PostComments']} for i in range(len(db_json['Posts'])) if db_json['Posts'][i]['PostID'] in list(results.PostID)]
-
-    resultsCommentsdf = pd.DataFrame(resultsComments)
-    semantic_results = results.merge(resultsCommentsdf, left_on='PostID', right_on='PostID')
+    results = [{'post': db_json['posts'][i], 'distance': D[0][j]} for j, i in enumerate(I[0])]
+    comment_limit = 5
+    for result in results:
+        permalink = result['post']['permalink']
+        result['post']['permalink'] = f'https://reddit.com{permalink}'
+        result['post']['comments'] = result['post']['comments'][:comment_limit]
     
-    return semantic_results[:limit]
+    return results
 

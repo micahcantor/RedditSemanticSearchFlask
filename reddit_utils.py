@@ -19,9 +19,10 @@ def reddit_search(reddit, subreddit_name, query, limit):
     for i, submission in enumerate(search_obj):
         if i < limit:
             title = submission.title
+            permalink = f'https://reddit.com{submission.permalink}'
             comment_limit = 5 # arbitrary, but allowing more comments is slower and need to deal with MoreComments objects
             comments = [comment.body for comment in submission.comments[:comment_limit]]
-            search_result.append({'title': title, 'comments': comments})
+            search_result.append({'title': title, 'permalink': permalink, 'comments': comments})
         else: break
     
     return search_result

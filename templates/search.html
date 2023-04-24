@@ -9,7 +9,7 @@
         {% for result in reddit %}
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
-            <div class="fw-bold">{{result['title']}}</div>
+            <a href={{result.permalink}} class="fw-bold">{{result['title']}}</a>
             <ul class="mt-2 list-group">
               {% for comment in result['comments'] %}
               <li class="list-group-item">
@@ -29,11 +29,11 @@
         {% for result in semantic %}
         <li class="list-group-item d-flex justify-content-between align-items-start">
           <div class="ms-2 me-auto">
-            <div class="fw-bold">{{result['title']}}</div>
+            <a class="fw-bold" href={{result.post.permalink}}>{{result.post.title}}</a>
             <ul class="mt-2 list-group">
-              {% for comment in result['comments'] %}
+              {% for comment in result.post.comments %}
               <li class="list-group-item">
-                {{ comment }}
+                {{ comment.body }}
               </li>
               {% endfor %}
             </ul>

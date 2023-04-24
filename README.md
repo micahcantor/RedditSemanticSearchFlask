@@ -30,6 +30,19 @@ python -m pip install -r requirements.txt
 
 Then, to run a development server for the app, simply execute `flask run` at the top level of this repository.
 
+## Local Database
+
+The app relies on a local database of cached subreddit data and their respective FAISS indices. The database can be built using the scripts `get_embeddings.py` and `get_reddit_data.py`. To set up the database from scratch, do the following:
+
+```sh
+touch subreddit_data_db.json
+python get_reddit_data.py programming
+python get_reddit_data.py technology
+python get_embeddings.py
+```
+
+First we create the database JSON file. Then we get the Reddit data for the subreddits we want. Finally we generate the embeddings for these subreddits. The indices for these embeddings will be stored under a new directory `indices/`.
+
 ## Deployment
 
 To deploy the app, refer to Flask documentation on [deploying to production](https://flask.palletsprojects.com/en/2.2.x/deploying/)
