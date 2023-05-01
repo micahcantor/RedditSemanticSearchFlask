@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request
 import cohere
 import json
-from cohere_utils import *
-from reddit_utils import *
+import faiss
+from cohere_utils import embed_query, semantic_search
+from reddit_utils import authenticate_reddit, reddit_search
 
 ### Initialization ###
 
@@ -17,9 +18,6 @@ with open('credentials.json') as f:
 with open("subreddit_data_db.json", "r") as f:
   subreddit_db = json.load(f)
 
-# Load saved faiss index
-faiss_index = faiss.read_index('faiss_index.idx')
-
 # Initialize/authenticate Reddit
 reddit = authenticate_reddit(credentials)
 
@@ -32,9 +30,9 @@ co = cohere.Client(credentials['cohere_api_key'])
 def index():
   return render_template('index.html')
 
-@app.route('/search',)
+@app.route('/search')
 def search():
-  search_limit = 5
+  search_limit = 5 # limit for number of results to display
 
   # Get the query's embedding
   query = request.args['query']

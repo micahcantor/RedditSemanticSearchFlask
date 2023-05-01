@@ -20,8 +20,7 @@ def semantic_search(query_embed, index, db_json, limit):
     results = [{'post': db_json['posts'][i], 'distance': D[0][j]} for j, i in enumerate(I[0])]
     comment_limit = 5
     for result in results:
-        permalink = result['post']['permalink']
-        result['post']['permalink'] = f'https://reddit.com{permalink}'
+        result['post']['permalink'] = 'https://reddit.com' + result['post']['permalink']
         result['post']['comments'] = result['post']['comments'][:comment_limit]
     
     return results
